@@ -29,7 +29,7 @@ def term_args() -> argparse.Namespace:
 
     parser = argparse.ArgumentParser(
         prog="vman",
-        formatter_class=argparse.RawTextHelpFormatter,
+        formatter_class=argparse.RawDescriptionHelpFormatter,
         usage='%(prog)s [video] [options]',
         description="vman - Video Man Pages"
     )
