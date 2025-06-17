@@ -1,6 +1,8 @@
-import json
 import os
+import json
+import shlex
 import pathlib
+import subprocess
 
 import sys
 
@@ -32,8 +34,7 @@ def main():
         print(url)
         exit()
 
-    print(__version__)
-    print(url)
+    subprocess.run(shlex.split(f"xdg-open '{url}'"), check=True)
 
 if __name__ == '__main__':
     main()
