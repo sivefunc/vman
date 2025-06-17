@@ -61,5 +61,13 @@ Written by a human"""
         action='store_true',
     )
 
+    parser.add_argument(
+        '-p',
+        '--player',
+        help="Path to media player to use instead of relying by default on xdg-open",
+        type=str,
+        metavar="PATH"
+    )
+
     args = parser.parse_args()
     return args
