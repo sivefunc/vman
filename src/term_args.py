@@ -30,7 +30,7 @@ def term_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(
         prog="vman",
         formatter_class=argparse.RawTextHelpFormatter,
-        usage='%(prog)s video [options]',
+        usage='%(prog)s [video] [options]',
         description="vman - Video Man Pages"
     )
 
@@ -51,7 +51,14 @@ Written by a human"""
         'video',
         help="Video to consult in the video manual, e.g 'ls'",
         type=str,
+        nargs="?",
         metavar="[VIDEO]"
+    )
+
+    parser.add_argument(
+        '--urls',
+        help="List all the video manuals in JSON format",
+        action='store_true',
     )
 
     args = parser.parse_args()

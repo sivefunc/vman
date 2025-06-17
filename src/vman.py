@@ -17,6 +17,10 @@ def main():
     with open(urls_path, 'r') as json_fp:
         urls = json.load(json_fp)
 
+    if t_args.urls:
+        print(json.dumps(urls, indent=4))
+        exit(0)
+
     try:
         url = urls[t_args.video]
 
