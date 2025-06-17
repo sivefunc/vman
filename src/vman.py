@@ -5,12 +5,15 @@ import pathlib
 import subprocess
 
 from _version import __version__
+from utils import load_config
 import term_args
 
-DEFAULT_MEDIA_PLAYER = "xdg-open"
+CONFIG = load_config()
+DEFAULT_MEDIA_PLAYER = CONFIG['constants']['DEFAULT_MEDIA_PLAYER']
 
 def main():
     t_args = term_args.term_args()
+
     if not t_args.video and not t_args.urls:
         print('No video provided to play')
         exit(1)

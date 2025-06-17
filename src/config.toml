@@ -1,0 +1,2 @@
+[constants]
+DEFAULT_MEDIA_PLAYER = "xdg-open"
