@@ -1,11 +1,14 @@
 import os
 import json
 import shlex
-import pathlib
 import subprocess
 
 from _version import __version__
-from utils import load_config
+from utils import (
+    load_config,
+    load_urls
+)
+
 import term_args
 
 CONFIG = load_config()
@@ -18,13 +21,7 @@ def main():
         print('No video provided to play')
         exit(1)
 
-    urls_path = os.path.join(
-        pathlib.Path(__file__).parent.resolve(),
-        'urls.json'
-    )
-
-    with open(urls_path, 'r') as json_fp:
-        urls = json.load(json_fp)
+    urls = load_urls()
 
     if t_args.urls:
         print(json.dumps(urls, indent=4))
