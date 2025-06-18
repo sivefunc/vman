@@ -240,19 +240,15 @@ def get_media_player_or_exit(
     in case that neither media_player_terminal nor media_player_config are
     provided.
     """
-    media_player = media_player_terminal
-    if media_player is None:
-        if media_player_config is not None:
-            media_player = media_player_config
+    if media_player_terminal is None and media_player_config is None:
+        print(f"error parsing vman config file at:"
+              " " f"'{constants.CONFIG_PATH}'"
+              "\nconfig file does not have a default media player"
+              "\ne.g: media_player = 'xdg-open'")
+        sys.exit(constants.USER_ERROR)
 
-        else:
-            print(f"error parsing vman config file at:"
-                    " " f"'{constants.CONFIG_PATH}'"
-                  "\nconfig file does not have a default media player"
-                  "\ne.g: media_player = 'xdg-open'")
-            sys.exit(constants.USER_ERROR)
-
-    return media_player
+    return (media_player_terminal if media_player_terminal is not None 
+            else media_player_config)
 
 def get_video_url_or_exit(
     video: str,
