@@ -1,0 +1,74 @@
+import os
+import sys
+import json
+import shlex
+import tomllib
+import subprocess
+
+import constants
+
+def load_config():
+    try:
+        with open(constants.CONFIG_PATH, 'rb') as config_fp:
+            config = tomllib.load(config_fp)
+
+    except FileNotFoundError:
+        print(f"vman configuration file does not exist at: "
+              f"'{constants.CONFIG_PATH}'")
+        sys.exit(constants.USER_ERROR)
+
+    except tomllib.TOMLDecodeError as parsing_error:
+        print(f"error parsing vman config file at: '{constants.CONFIG_PATH}'"
+              f"\n{parsing_error}")
+        sys.exit(constants.USER_ERROR)
+    
+    return config
+
+def get_urls_path(config):
+    urls_path = os.path.join(constants.SRC_PATH, 'urls.json')
+    if (config.get('custom-urls') is not None
+            and config['custom-urls'].get('enabled')):
+
+        try:
+            urls_path = config['custom-urls']['path']
+
+        except KeyError:
+            print(f"[custom-urls] is enabled at: '{constants.CONFIG_PATH}'"
+                  " " "but a path was not given, it should be like this:"
+                  "\n[custom-urls]"
+                  "\nenabled = true"
+                  "\npath = '/home/user-name/.config/vman/urls.json'"
+                  )
+            sys.exit(constants.USER_ERROR)
+
+    return urls_path
+
+def load_urls(urls_path):
+    try:
+        with open(urls_path, 'r') as json_fp:
+            urls = json.load(json_fp)
+    
+    except FileNotFoundError:
+        print(f"vman urls json file does not exist at: "
+              f"'{urls_path}'")
+        sys.exit(constants.USER_ERROR)
+
+    except json.JSONDecodeError as parsing_error:
+        print(f"error parsing vman urls json file at: '{urls_path}'"
+              f"\n{parsing_error}")
+        sys.exit(constants.USER_ERROR)
+
+    return urls
+
+def get_video_url(video, urls_path):
+    try:
+        url = urls_path[video]
+
+    except KeyError:
+        print(f"No video manual for {video}")
+        sys.exit(constants.NO_VIDEO_MANUAL_ERROR)
+
+    return url
+
+def play_video(media_player, video_url):
+    subprocess.run(shlex.split(f"{media_player} '{video_url}'"), check=True)
