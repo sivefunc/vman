@@ -30,6 +30,11 @@ def main():
         author = get_author_or_exit(t_args.author, config.get('author'))
         author_urls = get_author_urls_or_exit(author, urls)
         video_url = get_video_url_or_exit(t_args.video, author, author_urls)
+
+        if t_args.only_url:
+            print(video_url)
+            sys.exit(constants.SUCCESS)
+
         media_player = get_media_player_or_exit(t_args.player,
                                                 config.get('media_player'))
         play_video(media_player, video_url)

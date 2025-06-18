@@ -85,6 +85,12 @@ Written by a human"""
     )
 
     parser.add_argument(
+        '--only-url',
+        help="Do not reproduce the video, returns the url",
+        action='store_true',
+    )
+
+    parser.add_argument(
         '--urls',
         help="List all the video manuals in JSON format",
         action='store_true',
