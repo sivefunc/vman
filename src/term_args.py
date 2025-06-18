@@ -70,4 +70,9 @@ Written by a human"""
     )
 
     args = parser.parse_args()
+
+    if not args.video and not args.urls:
+        print('No video provided to play')
+        sys.exit(1)
+
     return args

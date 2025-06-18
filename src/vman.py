@@ -1,6 +1,8 @@
 import os
+import sys
 import json
 import shlex
+import pathlib
 import subprocess
 
 from _version import __version__
@@ -11,30 +13,35 @@ from utils import (
 
 import term_args
 
-CONFIG = load_config()
-DEFAULT_MEDIA_PLAYER = CONFIG['constants']['DEFAULT_MEDIA_PLAYER']
+SRC_PATH = pathlib.Path(__file__).parent.resolve()
+CONFIG_PATH = os.path.join(SRC_PATH, 'config.toml')
 
 def main():
+    config = load_config(CONFIG_PATH)
+
     t_args = term_args.term_args()
 
-    if not t_args.video and not t_args.urls:
-        print('No video provided to play')
-        exit(1)
+    urls_path = os.path.join(SRC_PATH, 'urls.json')
+    if config['custom-urls']['enabled']:
+        urls_path = config['custom-urls']['path']
 
-    urls = load_urls()
-
+    urls = load_urls(urls_path)
+    
     if t_args.urls:
         print(json.dumps(urls, indent=4))
-        exit(0)
+        sys.exit(0)
 
     try:
         url = urls[t_args.video]
 
     except KeyError:
         print(f"No video manual for {t_args.video}")
-        exit(16)
+        sys.exit(16)
 
-    media_player = DEFAULT_MEDIA_PLAYER if not t_args.player else t_args.player
+    media_player = config['media_player']
+    if t_args.player:
+        media_player = t_args.player
+
     subprocess.run(shlex.split(f"{media_player} '{url}'"), check=True)
 
 if __name__ == '__main__':

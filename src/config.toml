@@ -1,2 +1,6 @@
-[constants]
-DEFAULT_MEDIA_PLAYER = "xdg-open"
+# Small config File
+media_player = "mpv"
+
+[custom-urls]
+enabled = false
+path = ""
