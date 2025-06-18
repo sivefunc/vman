@@ -55,7 +55,7 @@ def load_config_or_exit() -> dict:
                      " " f"'{constants.CONFIG_PATH}'"
                      f"\n{parsing_error}")
         sys.exit(constants.USER_ERROR)
-    
+
     logger.debug(f"{constants.CONFIG_PATH} loaded into memory.")
     return config
 
@@ -178,7 +178,7 @@ def load_urls_or_exit(urls_path: str) -> dict:
     try:
         with open(urls_path, 'r', encoding="utf-8") as json_fp:
             urls = json.load(json_fp)
-    
+
     except FileNotFoundError:
         logger.error(f"vman urls json file does not exist at:"
                      " " f"'{urls_path}'")
@@ -265,7 +265,7 @@ def get_media_player_or_exit(
             "\ne.g: media_player = 'xdg-open'")
         sys.exit(constants.USER_ERROR)
 
-    media_player = (media_player_terminal if media_player_terminal is not None 
+    media_player = (media_player_terminal if media_player_terminal is not None
             else media_player_config)
 
     logger.debug(f"Media player provided: '{media_player}'")

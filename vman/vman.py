@@ -25,7 +25,7 @@ from .utils import (
 def main():
     """ Entry Point Function """
     # One time logger initialization
-    with (open(constants.LOGGER_CONFIG_PATH, 'r', encoding="utf-8") 
+    with (open(constants.LOGGER_CONFIG_PATH, 'r', encoding="utf-8")
           as logger_config_fp):
         logger_config = json.load(logger_config_fp)
 
@@ -51,7 +51,7 @@ def main():
         config = load_config_or_exit()
         urls_path = get_urls_path_or_exit(config)
         urls = load_urls_or_exit(urls_path)
-            
+
         # Print all the Urls
         if terminal.urls:
             print(json.dumps(urls, indent=4))
