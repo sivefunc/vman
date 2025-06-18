@@ -11,6 +11,7 @@ from utils import (
     get_video_url,
     get_author,
     get_author_urls,
+    get_media_player,
     play_video
 )
 
@@ -27,8 +28,7 @@ def main():
     author = get_author(t_args.author, config.get('author'))
     author_urls = get_author_urls(author, urls)
     video_url = get_video_url(t_args.video, author, author_urls)
-
-    media_player = t_args.player if t_args.player else config['media_player']
+    media_player = get_media_player(t_args.player, config.get('media_player'))
     play_video(media_player, video_url)
 
 if __name__ == '__main__':

@@ -85,6 +85,20 @@ def get_author_urls(author, urls):
 
     return author_urls
 
+def get_media_player(media_player_terminal, media_player_config):
+    media_player = media_player_terminal
+    if media_player is None:
+        if media_player_config is not None:
+            media_player = media_player_config
+
+        else:
+            print(f"error parsing vman config file at:"
+                    " " f"'{constants.CONFIG_PATH}'"
+                  "\nconfig file does not have a default media player"
+                  "\ne.g: media_player = 'xdg-open'")
+            sys.exit(constants.USER_ERROR)
+
+    return media_player
 
 def get_video_url(video, author, author_urls):
     try:
