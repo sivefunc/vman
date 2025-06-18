@@ -2,7 +2,6 @@ import os
 import sys
 import json
 import shlex
-import pathlib
 import subprocess
 
 from _version import __version__
@@ -11,17 +10,15 @@ from utils import (
     load_urls
 )
 
+import constants
 import term_args
 
-SRC_PATH = pathlib.Path(__file__).parent.resolve()
-CONFIG_PATH = os.path.join(SRC_PATH, 'config.toml')
-
 def main():
-    config = load_config(CONFIG_PATH)
+    config = load_config(constants.CONFIG_PATH)
 
     t_args = term_args.term_args()
 
-    urls_path = os.path.join(SRC_PATH, 'urls.json')
+    urls_path = os.path.join(constants.SRC_PATH, 'urls.json')
     if config['custom-urls']['enabled']:
         urls_path = config['custom-urls']['path']
 
@@ -29,14 +26,14 @@ def main():
     
     if t_args.urls:
         print(json.dumps(urls, indent=4))
-        sys.exit(0)
+        sys.exit(constants.SUCCESS)
 
     try:
         url = urls[t_args.video]
 
     except KeyError:
         print(f"No video manual for {t_args.video}")
-        sys.exit(16)
+        sys.exit(constants.NO_VIDEO_MANUAL_ERROR)
 
     media_player = config['media_player']
     if t_args.player:

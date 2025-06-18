@@ -3,6 +3,7 @@
 import sys
 import argparse
 
+import constants
 from _version import __version__
 
 def term_args() -> argparse.Namespace:
@@ -25,7 +26,7 @@ def term_args() -> argparse.Namespace:
             "What video manual do you want?\n"
             "For example, try 'vman ls'."
         )
-        sys.exit(0)
+        sys.exit(constants.USER_ERROR)
 
     parser = argparse.ArgumentParser(
         prog="vman",
@@ -56,23 +57,24 @@ Written by a human"""
     )
 
     parser.add_argument(
-        '--urls',
-        help="List all the video manuals in JSON format",
-        action='store_true',
+        '-p',
+        '--player',
+        help="Path to media player to use instead of the one defined in"
+                " " f"{constants.CONFIG_PATH}",
+        type=str,
+        metavar="PATH"
     )
 
     parser.add_argument(
-        '-p',
-        '--player',
-        help="Path to media player to use instead of relying by default on xdg-open",
-        type=str,
-        metavar="PATH"
+        '--urls',
+        help="List all the video manuals in JSON format",
+        action='store_true',
     )
 
     args = parser.parse_args()
 
     if not args.video and not args.urls:
         print('No video provided to play')
-        sys.exit(1)
+        sys.exit(constants.FAILURE)
 
     return args

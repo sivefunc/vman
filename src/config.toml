@@ -1,5 +1,5 @@
 # Small config File
-media_player = "mpv"
+media_player = "xdg-open"
 
 [custom-urls]
 enabled = false
