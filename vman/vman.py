@@ -1,11 +1,11 @@
 import sys
 import traceback
 
-from _version import __version__
+from ._version import __version__
 
-import constants
-import term_args
-from utils import (
+from . import constants
+from . import term_args
+from .utils import (
     load_config_or_exit,
     get_urls_path_or_exit,
     load_urls_or_exit,

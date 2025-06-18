@@ -5,7 +5,7 @@ import shlex
 import tomllib
 import subprocess
 
-import constants
+from . import constants
 
 def load_config_or_exit():
     try:

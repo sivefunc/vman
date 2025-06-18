@@ -32,10 +32,10 @@ dev = [
 keywords = ['linux', 'python3', 'man']
 
 [tool.setuptools.dynamic]
-version = {attr = "_version.__version__"}
+version = {attr = "vman._version.__version__"}
 
 [project.urls]
 Homepage = "https://github.com/Sivefunc/vman"
 
 [project.scripts]
-vman = "vman:main"
+vman = "vman.vman:main"

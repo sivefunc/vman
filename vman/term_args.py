@@ -3,8 +3,8 @@
 import sys
 import argparse
 
-import constants
-from _version import __version__
+from . import constants
+from ._version import __version__
 
 def term_args() -> argparse.Namespace:
     """
