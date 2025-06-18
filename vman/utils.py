@@ -176,7 +176,7 @@ def load_urls_or_exit(urls_path: str) -> dict:
     """
 
     try:
-        with open(urls_path, 'r') as json_fp:
+        with open(urls_path, 'r', encoding="utf-8") as json_fp:
             urls = json.load(json_fp)
     
     except FileNotFoundError:

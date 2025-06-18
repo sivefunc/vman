@@ -25,7 +25,8 @@ from .utils import (
 def main():
     """ Entry Point Function """
     # One time logger initialization
-    with open(constants.LOGGER_CONFIG_PATH, 'r') as logger_config_fp:
+    with (open(constants.LOGGER_CONFIG_PATH, 'r', encoding="utf-8") 
+          as logger_config_fp):
         logger_config = json.load(logger_config_fp)
 
     logger_config['handlers']['file']['filename'] = constants.LOGS_PATH
