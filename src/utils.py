@@ -51,7 +51,7 @@ def get_author(author_args, author_config):
 
         else:
             print(f"error parsing vman config file at:"
-                    " " "'{constants.CONFIG_PATH}'"
+                    " " f"'{constants.CONFIG_PATH}'"
                   "\nconfig file does not have a default author"
                   "\ne.g: author = 'distrotube'")
             sys.exit(constants.USER_ERROR)
