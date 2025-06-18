@@ -9,6 +9,7 @@ from utils import (
     get_urls_path,
     load_urls,
     get_video_url,
+    get_author_urls,
     play_video
 )
 
@@ -22,7 +23,9 @@ def main():
         print(json.dumps(urls, indent=4))
         sys.exit(constants.SUCCESS)
 
-    video_url = get_video_url(t_args.video, urls)
+    author = t_args.author if t_args.author else config['author']
+    author_urls = get_author_urls(author, urls)
+    video_url = get_video_url(t_args.video, t_args.author, author_urls)
 
     media_player = t_args.player if t_args.player else config['media_player']
     play_video(media_player, video_url)

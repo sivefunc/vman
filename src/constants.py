@@ -10,4 +10,5 @@ SUCCESS                 = 0
 USER_ERROR              = 1
 OPERATIONAL_ERROR       = 2
 CHILD_ERROR             = 3
+NO_AUTHOR_ERROR         = 8
 NO_VIDEO_MANUAL_ERROR   = 16

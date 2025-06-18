@@ -31,7 +31,7 @@ def term_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(
         prog="vman",
         formatter_class=argparse.RawDescriptionHelpFormatter,
-        usage='%(prog)s [video] [options]',
+        usage='%(prog)s [video] [author] [options]',
         description="vman - Video Man Pages",
         epilog=f"""
 EXIT STATUS
@@ -39,7 +39,8 @@ EXIT STATUS
     1       Usage, syntax or configuration file error.
     2       Operational error.
     3       A child process returned a non-zero exit status.
-    16      Video Manual was not Found
+    8       Author was not found.
+    16      Video manual was not found.
 
 FILES
     CONFIG = {constants.CONFIG_PATH}
@@ -68,6 +69,14 @@ Written by a human"""
     )
 
     parser.add_argument(
+        '-a',
+        '--author',
+        help="Author of the video to consult, e.g 'roberteldersoftware'",
+        type=str,
+        metavar="AUTHOR"
+    )
+
+    parser.add_argument(
         '-p',
         '--player',
         help="Path to media player to use instead of the one defined in config",
@@ -85,6 +94,6 @@ Written by a human"""
 
     if not args.video and not args.urls:
         print('No video provided to play')
-        sys.exit(constants.FAILURE)
+        sys.exit(constants.USER_ERROR)
 
     return args

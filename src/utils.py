@@ -60,15 +60,26 @@ def load_urls(urls_path):
 
     return urls
 
-def get_video_url(video, urls_path):
+def get_author_urls(author, urls):
     try:
-        url = urls_path[video]
+        author_urls = urls[author]
 
     except KeyError:
-        print(f"No video manual for {video}")
+        print(f"The author '{author}' does not exist")
+        sys.exit(constants.NO_AUTHOR_ERROR)
+
+    return author_urls
+
+
+def get_video_url(video, author, author_urls):
+    try:
+        video_url = author_urls[video]
+
+    except KeyError:
+        print(f"The author '{author}' does not have a manual about '{video}'")
         sys.exit(constants.NO_VIDEO_MANUAL_ERROR)
 
-    return url
+    return video_url
 
 def play_video(media_player, video_url):
     subprocess.run(shlex.split(f"{media_player} '{video_url}'"), check=True)

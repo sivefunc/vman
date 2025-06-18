@@ -1,5 +1,6 @@
 # Small config File
 media_player = "xdg-open"
+author = "distrotube"
 
 [custom-urls]
 enabled = false
