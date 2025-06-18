@@ -4,6 +4,7 @@ The majority of these functions comes in the form 'execute_or_exit(...)'
 indicating that if some function fails the program will sys.exit(...).
 """
 
+# Standard Library
 import os
 import sys
 import json
@@ -11,6 +12,7 @@ import shlex
 import tomllib
 import subprocess
 
+# Locals
 from . import constants
 
 def load_config_or_exit() -> dict:

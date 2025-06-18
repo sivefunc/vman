@@ -1,9 +1,11 @@
 """ Entry point """
 
+# Standard Library
 import sys
 import json
 import traceback
 
+# Local
 from ._version import __version__
 
 from . import constants
