@@ -98,17 +98,17 @@ def get_urls_path_or_exit(config: dict) -> str:
     return urls_path
 
 def get_author_or_exit(
-    author_args: str | None,
+    author_terminal: str | None,
     author_config: str | None
 ) -> str:
     """ Author of the video manuals
 
-    Chooses by default the author_args but if it was not set then
-    chooses the one in the config.toml.
+    Chooses by default the author_terminal but if it was not set then
+    chooses the one in the author_config - config.toml.
 
     Parameters
     ----------
-    author_args : str | None
+    author_terminal : str | None
                   The author provided in the CLI as an option.
 
     author_config : str | None
@@ -122,10 +122,10 @@ def get_author_or_exit(
     Notes
     -----
     The program will sys.exit(constants.USER_ERROR) with a helpful message
-    in case that neither author_args nor author_config are provided.
+    in case that neither author_terminal nor author_config are provided.
     """
 
-    author = author_args
+    author = author_terminal
     if author is None:
         if author_config is not None:
             author = author_config
