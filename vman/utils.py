@@ -13,7 +13,29 @@ import subprocess
 
 from . import constants
 
-def load_config_or_exit():
+def load_config_or_exit() -> dict:
+    """ Loads into memory the config.toml file located at CONFIG_PATH
+
+    Parameters
+    ----------
+    None
+
+    Returns
+    -------
+    config : dict
+
+    Notes
+    -----
+    The loading of the file can cause two known exceptions to raise:
+        - FileNotFoundError
+            File does not exist at CONFIG_PATH
+
+        - tomllib.TOMLDecodeError
+            config.toml is not a valid TOML file.
+
+    The program will sys.exit(constants.USER_ERROR) in case of an error
+    with a helpful message.
+    """
     try:
         with open(constants.CONFIG_PATH, 'rb') as config_fp:
             config = tomllib.load(config_fp)
@@ -30,7 +52,33 @@ def load_config_or_exit():
     
     return config
 
-def get_urls_path_or_exit(config):
+def get_urls_path_or_exit(config: dict) -> str:
+    """ Location of the urls.json file
+
+    Chooses by default the urls.json located in the same directory as
+    vman.py, except that custom-urls is enabled in config.toml.
+
+    Parameters
+    ----------
+    config : dict
+             The loaded config.toml into memory that could have the
+             option [custom-urls].
+             
+    Returns
+    -------
+    path : str
+           Location of the urls.json.
+
+    Notes
+    -----
+    The parsing of the file can cause the known exception to raise:
+        - KeyError
+            Custom urls enabled but path option is not in config.toml.
+
+    The program will sys.exit(constants.USER_ERROR) in case of an error
+    with a helpful message.
+    """
+
     urls_path = os.path.join(constants.SRC_PATH, 'urls.json')
     if (config.get('custom-urls') is not None
             and config['custom-urls'].get('enabled')):
@@ -49,7 +97,34 @@ def get_urls_path_or_exit(config):
 
     return urls_path
 
-def get_author_or_exit(author_args, author_config):
+def get_author_or_exit(
+    author_args: str | None,
+    author_config: str | None
+) -> str:
+    """ Author of the video manuals
+
+    Chooses by default the author_args but if it was not set then
+    chooses the one in the config.toml.
+
+    Parameters
+    ----------
+    author_args : str | None
+                  The author provided in the CLI as an option.
+
+    author_config : str | None
+        The author provided in the config.toml.
+             
+    Returns
+    -------
+    author : str
+             Author that the user wants to consume.
+
+    Notes
+    -----
+    The program will sys.exit(constants.USER_ERROR) with a helpful message
+    in case that neither author_args nor author_config are provided.
+    """
+
     author = author_args
     if author is None:
         if author_config is not None:
@@ -64,7 +139,31 @@ def get_author_or_exit(author_args, author_config):
 
     return author
 
-def load_urls_or_exit(urls_path):
+def load_urls_or_exit(urls_path: str) -> dict:
+    """ Load urls.json into memory
+
+    Parameters
+    ----------
+    urls_path : str
+                Location of the JSON file.
+
+    Returns
+    -------
+    urls : dict
+
+    Notes
+    -----
+    The loading of the file can cause two known exceptions to raise:
+        - FileNotFoundError
+            File does not exist at CONFIG_PATH
+
+        - json.JSONDecodeError
+            urls.json is not a valid JSON file.
+
+    The program will sys.exit(constants.USER_ERROR) in case of an error
+    with a helpful message.
+    """
+
     try:
         with open(urls_path, 'r') as json_fp:
             urls = json.load(json_fp)
@@ -81,17 +180,70 @@ def load_urls_or_exit(urls_path):
 
     return urls
 
-def get_author_urls_or_exit(author, urls):
+def get_author_urls_or_exit(author: str, urls: dict) -> dict:
+    """ Urls of the videos that are exlusive to the author
+
+    Parameters
+    ----------
+    author : str
+             Author name that hopefully appears in urls.json
+
+    urls : dict
+           urls.json file loaded into memory.
+
+    Returns
+    -------
+    author_urls : dict
+                  Exclusive videos
+
+    Notes
+    -----
+    The parsing of the file can cause the known exception to raise:
+        - KeyError
+            Author does not exist in urls.json
+
+    The program will sys.exit(constants.NO_AUTHOR_ERROR) in case of
+    the error raising with a helpful message.
+    """
+
     try:
         author_urls = urls[author]
 
     except KeyError:
-        print(f"The author '{author}' does not exist")
+        print(f"The author '{author}' does not exist in urls.json")
         sys.exit(constants.NO_AUTHOR_ERROR)
 
     return author_urls
 
-def get_media_player_or_exit(media_player_terminal, media_player_config):
+def get_media_player_or_exit(
+    media_player_terminal: str | None,
+    media_player_config: str | None
+) -> str:
+    """ Media player that will play the video manual
+
+    Chooses by default the media_player_terminal but if it was not set then
+    chooses the one in the media_player_config.
+
+    Parameters
+    ----------
+    media_player_terminal : str | None
+                            The media player provided in the CLI as an
+                            option.
+
+    media_player_config : str | None
+                          The media player provided in the config.toml.
+                        
+    Returns
+    -------
+    media_player : str
+                   Program that will be used to view the video.
+
+    Notes
+    -----
+    The program will sys.exit(constants.USER_ERROR) with a helpful message
+    in case that neither media_player_terminal nor media_player_config are
+    provided.
+    """
     media_player = media_player_terminal
     if media_player is None:
         if media_player_config is not None:
@@ -106,7 +258,39 @@ def get_media_player_or_exit(media_player_terminal, media_player_config):
 
     return media_player
 
-def get_video_url_or_exit(video, author, author_urls):
+def get_video_url_or_exit(
+    video: str,
+    author: str,
+    author_urls: str,
+) -> str:
+    """ Url of the video that belongs to the author
+
+    Parameters
+    ----------
+    video : str
+            Video that the user wants to consume.
+
+    author : str
+             Author of the video.
+
+    author_urls : dict
+                  Video urls made by author.
+
+    Returns
+    -------
+    video_url : str
+                URL of the vide.
+
+    Notes
+    -----
+    The parsing of the file can cause the known exception to raise:
+        - KeyError
+            The autor does not have a video about that manual.
+
+    The program will sys.exit(constants.NO_VIDEO_MANUAL_ERROR) in case of
+    the error with a helpful message.
+    """
+
     try:
         video_url = author_urls[video]
 
@@ -116,5 +300,13 @@ def get_video_url_or_exit(video, author, author_urls):
 
     return video_url
 
-def play_video(media_player, video_url):
+def play_video(media_player: str, video_url: str):
+    """ Executes in a subprocess the media player with the video url
+    
+    Parameters
+    ----------
+    media_player : str
+    vide_url : str
+    """
+
     subprocess.run(shlex.split(f"{media_player} '{video_url}'"), check=True)
