@@ -5,7 +5,6 @@ import sys
 import json
 import logging
 import logging.config
-import traceback
 
 # Local
 from ._version import __version__
