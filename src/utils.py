@@ -7,7 +7,7 @@ import subprocess
 
 import constants
 
-def load_config():
+def load_config_or_exit():
     try:
         with open(constants.CONFIG_PATH, 'rb') as config_fp:
             config = tomllib.load(config_fp)
@@ -24,7 +24,7 @@ def load_config():
     
     return config
 
-def get_urls_path(config):
+def get_urls_path_or_exit(config):
     urls_path = os.path.join(constants.SRC_PATH, 'urls.json')
     if (config.get('custom-urls') is not None
             and config['custom-urls'].get('enabled')):
@@ -43,7 +43,7 @@ def get_urls_path(config):
 
     return urls_path
 
-def get_author(author_args, author_config):
+def get_author_or_exit(author_args, author_config):
     author = author_args
     if author is None:
         if author_config is not None:
@@ -58,7 +58,7 @@ def get_author(author_args, author_config):
 
     return author
 
-def load_urls(urls_path):
+def load_urls_or_exit(urls_path):
     try:
         with open(urls_path, 'r') as json_fp:
             urls = json.load(json_fp)
@@ -75,7 +75,7 @@ def load_urls(urls_path):
 
     return urls
 
-def get_author_urls(author, urls):
+def get_author_urls_or_exit(author, urls):
     try:
         author_urls = urls[author]
 
@@ -85,7 +85,7 @@ def get_author_urls(author, urls):
 
     return author_urls
 
-def get_media_player(media_player_terminal, media_player_config):
+def get_media_player_or_exit(media_player_terminal, media_player_config):
     media_player = media_player_terminal
     if media_player is None:
         if media_player_config is not None:
@@ -100,7 +100,7 @@ def get_media_player(media_player_terminal, media_player_config):
 
     return media_player
 
-def get_video_url(video, author, author_urls):
+def get_video_url_or_exit(video, author, author_urls):
     try:
         video_url = author_urls[video]
 
