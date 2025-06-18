@@ -1,6 +1,7 @@
 """ Entry point """
 
 import sys
+import json
 import traceback
 
 from ._version import __version__
