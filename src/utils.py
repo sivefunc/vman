@@ -43,6 +43,21 @@ def get_urls_path(config):
 
     return urls_path
 
+def get_author(author_args, author_config):
+    author = author_args
+    if author is None:
+        if author_config is not None:
+            author = author_config
+
+        else:
+            print(f"error parsing vman config file at:"
+                    " " "'{constants.CONFIG_PATH}'"
+                  "\nconfig file does not have a default author"
+                  "\ne.g: author = 'distrotube'")
+            sys.exit(constants.USER_ERROR)
+
+    return author
+
 def load_urls(urls_path):
     try:
         with open(urls_path, 'r') as json_fp:
