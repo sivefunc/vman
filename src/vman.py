@@ -2,19 +2,30 @@ import os
 import sys
 import json
 import shlex
+import tomllib
 import subprocess
 
 from _version import __version__
-from utils import (
-    load_config,
-    load_urls
-)
 
 import constants
 import term_args
 
 def main():
-    config = load_config(constants.CONFIG_PATH)
+
+    # Config Loading
+    try:
+        with open(constants.CONFIG_PATH, 'rb') as config_fp:
+            config = tomllib.load(config_fp)
+
+    except FileNotFoundError:
+        print(f"vman configuration file does not exist at: "
+              f"'{constants.CONFIG_PATH}'")
+        exit(constants.USER_ERROR)
+
+    except tomllib.TOMLDecodeError as parsing_error:
+        print(f"error parsing vman config file at: '{constants.CONFIG_PATH}'"
+              f"\n{parsing_error}")
+        exit(constants.USER_ERROR)
 
     t_args = term_args.term_args()
 
@@ -22,7 +33,20 @@ def main():
     if config['custom-urls']['enabled']:
         urls_path = config['custom-urls']['path']
 
-    urls = load_urls(urls_path)
+    # Load URL's JSON File
+    try:
+        with open(urls_path, 'r') as json_fp:
+            urls = json.load(json_fp)
+    
+    except FileNotFoundError:
+        print(f"vman urls json file does not exist at: "
+              f"'{urls_path}'")
+        exit(constants.USER_ERROR)
+
+    except json.JSONDecodeError as parsing_error:
+        print(f"error parsing vman urls json file at: '{urls_path}'"
+              f"\n{parsing_error}")
+        exit(constants.USER_ERROR)
     
     if t_args.urls:
         print(json.dumps(urls, indent=4))
