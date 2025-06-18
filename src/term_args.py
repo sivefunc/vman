@@ -32,7 +32,18 @@ def term_args() -> argparse.Namespace:
         prog="vman",
         formatter_class=argparse.RawDescriptionHelpFormatter,
         usage='%(prog)s [video] [options]',
-        description="vman - Video Man Pages"
+        description="vman - Video Man Pages",
+        epilog=f"""
+EXIT STATUS
+    0       Successful program execution.
+    1       Usage, syntax or configuration file error.
+    2       Operational error.
+    3       A child process returned a non-zero exit status.
+    16      Video Manual was not Found
+
+FILES
+    CONFIG = {constants.CONFIG_PATH}
+"""
     )
 
     parser.add_argument(
@@ -59,8 +70,7 @@ Written by a human"""
     parser.add_argument(
         '-p',
         '--player',
-        help="Path to media player to use instead of the one defined in"
-                " " f"{constants.CONFIG_PATH}",
+        help="Path to media player to use instead of the one defined in config",
         type=str,
         metavar="PATH"
     )
