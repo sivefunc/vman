@@ -10,10 +10,13 @@ import sys
 import json
 import shlex
 import tomllib
+import logging
 import subprocess
 
 # Locals
 from . import constants
+
+logger = logging.getLogger(__name__)
 
 def load_config_or_exit() -> dict:
     """ Loads into memory the config.toml file located at CONFIG_PATH
@@ -43,15 +46,17 @@ def load_config_or_exit() -> dict:
             config = tomllib.load(config_fp)
 
     except FileNotFoundError:
-        print(f"vman configuration file does not exist at: "
-              f"'{constants.CONFIG_PATH}'")
+        logger.error(f"vman configuration file does not exist at:"
+                     " " f"'{constants.CONFIG_PATH}'")
         sys.exit(constants.USER_ERROR)
 
     except tomllib.TOMLDecodeError as parsing_error:
-        print(f"error parsing vman config file at: '{constants.CONFIG_PATH}'"
-              f"\n{parsing_error}")
+        logger.error(f"error parsing vman config file at:"
+                     " " f"'{constants.CONFIG_PATH}'"
+                     f"\n{parsing_error}")
         sys.exit(constants.USER_ERROR)
     
+    logger.debug(f"{constants.CONFIG_PATH} loaded into memory.")
     return config
 
 def get_urls_path_or_exit(config: dict) -> str:
@@ -87,16 +92,21 @@ def get_urls_path_or_exit(config: dict) -> str:
 
         try:
             urls_path = config['custom-urls']['path']
+            logger.debug(f"{urls_path} is the one in config.toml")
 
         except KeyError:
-            print(f"[custom-urls] is enabled at: '{constants.CONFIG_PATH}'"
-                  " " "but a path was not given, it should be like this:"
-                  "\n[custom-urls]"
-                  "\nenabled = true"
-                  "\npath = '/home/user-name/.config/vman/urls.json'"
-                  )
+            logger.error(
+                f"[custom-urls] is enabled at: '{constants.CONFIG_PATH}'"
+                " " "but a path was not given, it should be like this:"
+                "\n[custom-urls]"
+                "\nenabled = true"
+                "\npath = '/home/user-name/.config/vman/urls.json'"
+                )
             sys.exit(constants.USER_ERROR)
 
+    else:
+        logger.debug(f"urls.json provided: '{urls_path}' is the one in"
+                     " " "src directory")
     return urls_path
 
 def get_author_or_exit(
@@ -129,13 +139,16 @@ def get_author_or_exit(
 
     # Nothing was provided.
     if author_terminal is None and author_config is None:
-        print(f"error parsing vman config file at:"
-              " " f"'{constants.CONFIG_PATH}'"
-              "\nconfig file does not have a default author"
-              "\ne.g: author = 'distrotube'")
+        logger.error(
+            f"error parsing vman config file at:"
+            " " f"'{constants.CONFIG_PATH}'"
+            "\nconfig file does not have a default author"
+            "\ne.g: author = 'distrotube'")
         sys.exit(constants.USER_ERROR)
 
-    return author_terminal if author_terminal is not None else author_config
+    author = author_terminal if author_terminal is not None else author_config
+    logger.debug(f"Author provided: {author}")
+    return author
 
 def load_urls_or_exit(urls_path: str) -> dict:
     """ Load urls.json into memory
@@ -167,15 +180,16 @@ def load_urls_or_exit(urls_path: str) -> dict:
             urls = json.load(json_fp)
     
     except FileNotFoundError:
-        print(f"vman urls json file does not exist at: "
-              f"'{urls_path}'")
+        logger.error(f"vman urls json file does not exist at:"
+                     " " f"'{urls_path}'")
         sys.exit(constants.USER_ERROR)
 
     except json.JSONDecodeError as parsing_error:
-        print(f"error parsing vman urls json file at: '{urls_path}'"
-              f"\n{parsing_error}")
+        logger.error(f"error parsing vman urls json file at: '{urls_path}'"
+                     f"\n{parsing_error}")
         sys.exit(constants.USER_ERROR)
 
+    logger.debug(f"{urls_path} loaded into memory.")
     return urls
 
 def get_author_urls_or_exit(author: str, urls: dict) -> dict:
@@ -208,9 +222,10 @@ def get_author_urls_or_exit(author: str, urls: dict) -> dict:
         author_urls = urls[author]
 
     except KeyError:
-        print(f"The author '{author}' does not exist in urls.json")
+        logger.error(f"The author '{author}' does not exist in urls.json")
         sys.exit(constants.NO_AUTHOR_ERROR)
 
+    logger.debug(f"Author '{author}' exists")
     return author_urls
 
 def get_media_player_or_exit(
@@ -243,14 +258,18 @@ def get_media_player_or_exit(
     provided.
     """
     if media_player_terminal is None and media_player_config is None:
-        print(f"error parsing vman config file at:"
-              " " f"'{constants.CONFIG_PATH}'"
-              "\nconfig file does not have a default media player"
-              "\ne.g: media_player = 'xdg-open'")
+        logger.error(
+            f"error parsing vman config file at:"
+            " " f"'{constants.CONFIG_PATH}'"
+            "\nconfig file does not have a default media player"
+            "\ne.g: media_player = 'xdg-open'")
         sys.exit(constants.USER_ERROR)
 
-    return (media_player_terminal if media_player_terminal is not None 
+    media_player = (media_player_terminal if media_player_terminal is not None 
             else media_player_config)
+
+    logger.debug(f"Media player provided: '{media_player}'")
+    return media_player
 
 def get_video_url_or_exit(
     video: str,
@@ -289,9 +308,11 @@ def get_video_url_or_exit(
         video_url = author_urls[video]
 
     except KeyError:
-        print(f"The author '{author}' does not have a manual about '{video}'")
+        logger.error(
+            f"The author '{author}' does not have a manual about '{video}'")
         sys.exit(constants.NO_VIDEO_MANUAL_ERROR)
 
+    logger.debug(f"Author '{author}' video url of '{video}' is '{video_url}'")
     return video_url
 
 def play_video(media_player: str, video_url: str):
@@ -302,5 +323,5 @@ def play_video(media_player: str, video_url: str):
     media_player : str
     vide_url : str
     """
-
+    logger.debug(f"Playing {video_url=} using {media_player=}")
     subprocess.run(shlex.split(f"{media_player} '{video_url}'"), check=True)

@@ -3,6 +3,8 @@
 # Standard Library
 import sys
 import json
+import logging
+import logging.config
 import traceback
 
 # Local
@@ -23,7 +25,21 @@ from .utils import (
 
 def main():
     """ Entry Point Function """
+    # One time logger initialization
+    with open(constants.LOGGER_CONFIG_PATH, 'r') as logger_config_fp:
+        logger_config = json.load(logger_config_fp)
+
+    logger_config['handlers']['file']['filename'] = constants.LOGS_PATH
+    logging.config.dictConfig(logger_config)
+    # End of one time initialization
+
+    # Logger for each module
+    logger = logging.getLogger(__name__)
+
     try:
+        logging.debug('PROGRAM START')
+
+        # Command Line Interface
         terminal = term_args.term_args()
 
         # Loading Files
@@ -52,10 +68,11 @@ def main():
         play_video(media_player, video_url)
 
     except KeyboardInterrupt:
+        logger.debug("Keyboard Interrupt")
         sys.exit(constants.USER_ERROR)
 
     except Exception:
-        traceback.print_exc()
+        logger.error("OperationalError", exc_info=True)
         sys.exit(constants.OPERATIONAL_ERROR)
 
     sys.exit(constants.SUCCESS)

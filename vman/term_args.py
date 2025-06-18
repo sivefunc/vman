@@ -2,11 +2,14 @@
 
 # Standard Library
 import sys
+import logging
 import argparse
 
 # Local
 from . import constants
 from ._version import __version__
+
+logger = logging.getLogger(__name__)
 
 def term_args() -> argparse.Namespace:
     """
@@ -24,7 +27,7 @@ def term_args() -> argparse.Namespace:
 
     # NO ARGUMENTS
     if len(sys.argv) == 1:
-        print(
+        logger.error(
             "What video manual do you want?\n"
             "For example, try 'vman ls'."
         )
@@ -46,6 +49,7 @@ EXIT STATUS
 
 FILES
     CONFIG = {constants.CONFIG_PATH}
+    LOGS = {constants.LOGS_PATH}
 """
     )
 
@@ -101,7 +105,7 @@ Written by a human"""
     args = parser.parse_args()
 
     if not args.video and not args.urls:
-        print('No video provided to play')
+        logger.error('No video provided to play')
         sys.exit(constants.USER_ERROR)
 
     return args

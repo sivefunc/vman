@@ -10,6 +10,8 @@ import pathlib
 # Paths
 SRC_PATH = pathlib.Path(__file__).parent.resolve()
 CONFIG_PATH = os.path.join(SRC_PATH, 'config.toml')
+LOGGER_CONFIG_PATH = os.path.join(SRC_PATH, 'logger_conf.json')
+LOGS_PATH = os.path.join(SRC_PATH, 'vman.log')
 
 # Return codes
 SUCCESS                 = 0
