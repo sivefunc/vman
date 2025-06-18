@@ -125,19 +125,15 @@ def get_author_or_exit(
     in case that neither author_terminal nor author_config are provided.
     """
 
-    author = author_terminal
-    if author is None:
-        if author_config is not None:
-            author = author_config
+    # Nothing was provided.
+    if author_terminal is None and author_config is None:
+        print(f"error parsing vman config file at:"
+              " " f"'{constants.CONFIG_PATH}'"
+              "\nconfig file does not have a default author"
+              "\ne.g: author = 'distrotube'")
+        sys.exit(constants.USER_ERROR)
 
-        else:
-            print(f"error parsing vman config file at:"
-                    " " f"'{constants.CONFIG_PATH}'"
-                  "\nconfig file does not have a default author"
-                  "\ne.g: author = 'distrotube'")
-            sys.exit(constants.USER_ERROR)
-
-    return author
+    return author_terminal if author_terminal is not None else author_config
 
 def load_urls_or_exit(urls_path: str) -> dict:
     """ Load urls.json into memory
