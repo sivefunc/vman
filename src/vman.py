@@ -30,8 +30,19 @@ def main():
     t_args = term_args.term_args()
 
     urls_path = os.path.join(constants.SRC_PATH, 'urls.json')
-    if config['custom-urls']['enabled']:
-        urls_path = config['custom-urls']['path']
+    if (config.get('custom-urls') is not None
+            and config['custom-urls'].get('enabled')):
+
+        try:
+            urls_path = config['custom-urls']['path']
+
+        except KeyError:
+            print(f"[custom-urls] is enabled at: '{constants.CONFIG_PATH}'"
+                  " " "but a path was not given, it should be like this:"
+                  "\n[custom-urls]"
+                  "\nenabled = true"
+                  "\npath = '/home/user-name/.config/vman/urls.json'"
+                  )
 
     # Load URL's JSON File
     try:
