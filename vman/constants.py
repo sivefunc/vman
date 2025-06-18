@@ -1,3 +1,9 @@
+""" VMAN Programmer Constants
+
+This file is intended to be used solely by the programmer
+If you are an user do not modify this file, modify config.toml instead.
+"""
+
 import os
 import pathlib
 

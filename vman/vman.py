@@ -1,3 +1,5 @@
+""" Entry point """
+
 import sys
 import traceback
 
@@ -17,6 +19,7 @@ from .utils import (
 )
 
 def main():
+    """ Entry Point Function """
     try:
         t_args = term_args.term_args()
         config = load_config_or_exit()

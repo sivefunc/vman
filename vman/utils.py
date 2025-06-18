@@ -1,3 +1,9 @@
+""" Functions used in vman.py
+
+The majority of these functions comes in the form 'execute_or_exit(...)'
+indicating that if some function fails the program will sys.exit(...).
+"""
+
 import os
 import sys
 import json
