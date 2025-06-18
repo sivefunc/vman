@@ -22,24 +22,24 @@ from .utils import (
 def main():
     """ Entry Point Function """
     try:
-        t_args = term_args.term_args()
+        terminal = term_args.term_args()
         config = load_config_or_exit()
         urls_path = get_urls_path_or_exit(config)
         urls = load_urls_or_exit(urls_path)
             
-        if t_args.urls:
+        if terminal.urls:
             print(json.dumps(urls, indent=4))
             sys.exit(constants.SUCCESS)
 
-        author = get_author_or_exit(t_args.author, config.get('author'))
+        author = get_author_or_exit(terminal.author, config.get('author'))
         author_urls = get_author_urls_or_exit(author, urls)
-        video_url = get_video_url_or_exit(t_args.video, author, author_urls)
+        video_url = get_video_url_or_exit(terminal.video, author, author_urls)
 
-        if t_args.only_url:
+        if terminal.only_url:
             print(video_url)
             sys.exit(constants.SUCCESS)
 
-        media_player = get_media_player_or_exit(t_args.player,
+        media_player = get_media_player_or_exit(terminal.player,
                                                 config.get('media_player'))
         play_video(media_player, video_url)
 
