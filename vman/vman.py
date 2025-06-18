@@ -37,10 +37,15 @@ def main():
     logger = logging.getLogger(__name__)
 
     try:
-        logging.debug('PROGRAM START')
-
         # Command Line Interface
         terminal = term_args.term_args()
+
+        if terminal.verbose:
+            # Initialize one more time to change logging level
+            logger_config['handlers']['console']['level'] = 'DEBUG'
+            logging.config.dictConfig(logger_config)
+
+        logging.debug('PROGRAM START')
 
         # Loading Files
         config = load_config_or_exit()

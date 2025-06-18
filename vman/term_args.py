@@ -102,6 +102,12 @@ Written by a human"""
         action='store_true',
     )
 
+    parser.add_argument(
+        '--verbose',
+        help="Detailed output at console",
+        action='store_true',
+    )
+
     args = parser.parse_args()
 
     if not args.video and not args.urls:
