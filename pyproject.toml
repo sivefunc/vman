@@ -40,5 +40,8 @@ Homepage = "https://github.com/Sivefunc/vman"
 [project.scripts]
 vman = "vman.vman:main"
 
-[tool.setuptools]
-py-modules = ['vman']
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+vman = ["*.py", "*.json", "*.toml"]

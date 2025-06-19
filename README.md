@@ -79,7 +79,7 @@ options:
 ## :file_folder: Files <a name="files"></a>
 ### Config File
 TOML file that allows the user to modify the default options, e.g the media player.
-It's located at vman/config.toml
+It's located at src/vman/config.toml
 example:
 ```toml
 media_player = "xdg-open"
@@ -92,7 +92,7 @@ path = ""
 
 ### URLS File
 JSON File that maps an author to a collection of videos.
-It's located at vman/urls.json but you can modify the location.
+It's located at src/vman/urls.json but you can modify the location.
 ```json
 {
     "distrotube": {
