@@ -1,7 +1,14 @@
 {
     "distrotube": {
-        "ls": "https://www.youtube.com/watch?v=T-4Q7i6mNeM",
-        "cd": "https://www.youtube.com/watch?v=0p4l-rIGTfs"
+        "cd":"https://www.youtube.com/watch?v=0p4l-rIGTfs",
+        "cp":"https://www.youtube.com/watch?v=KeAkWb4wgsc",
+        "ls":"https://www.youtube.com/watch?v=T-4Q7i6mNeM",
+        "mv":"https://www.youtube.com/watch?v=R8CQjsNYdvY",
+        "man":"https://www.youtube.com/watch?v=1V5ewUKIM1I",
+        "mkdir":"https://www.youtube.com/watch?v=Do4G_es2vm8",
+        "rmdir":"https://www.youtube.com/watch?v=07nVHYb_vV0",
+        "rm":"https://www.youtube.com/watch?v=1h9T3-X_1qQ",
+        "seq":"https://www.youtube.com/watch?v=d-3A3Y2C-Fc"
     },
     "roberteldersoftware": {
         "nice": "https://www.youtube.com/shorts/uuCYq64Ww7o",
