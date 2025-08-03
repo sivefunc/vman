@@ -9,7 +9,10 @@
         "rmdir":"https://www.youtube.com/watch?v=07nVHYb_vV0",
         "rm":"https://www.youtube.com/watch?v=1h9T3-X_1qQ",
         "seq":"https://www.youtube.com/watch?v=d-3A3Y2C-Fc",
-        "uname":"https://www.youtube.com/watch?v=TgoJ51OwSeA"
+        "uname":"https://www.youtube.com/watch?v=TgoJ51OwSeA",
+        "pwd": "https://www.youtube.com/watch?v=nXJdxxXjkvA",
+        "whoami": "https://www.youtube.com/watch?v=TLH7tDk6OP4",
+        "hostname": "https://www.youtube.com/watch?v=XMPeAVx3Cls"
     },
     "roberteldersoftware": {
         "nice": "https://www.youtube.com/shorts/uuCYq64Ww7o",
